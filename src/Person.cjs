@@ -11,4 +11,5 @@ const p1 = new Person("John", 25);
 console.log(p1);
 console.log(p1 + '');
 
-
+// CJS的匯出
+module.exports = Person;
