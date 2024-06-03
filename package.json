@@ -1,7 +1,9 @@
 {
-  "name": "node",
+  "name": "mfee55-node",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
+  "type說明": "使用註解的方式",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
