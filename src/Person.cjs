@@ -13,4 +13,4 @@ console.log(p1 + '');
 
 // CJS的匯出，可以匯出任何類型的資料
 // 但只能有一個
-module.exports = Person;
+module.exports = {Person, p1};

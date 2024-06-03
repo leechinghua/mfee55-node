@@ -4,7 +4,7 @@ const Person = require("./Person.cjs");
 const Person2 = require("./Person.cjs");
 
 const p2 = new Person("Flora", 23);
-const p3 = new Person2("Alex", 22);
+const p3 = new Person2.Person("Alex", 22);
 
 console.log(p2);
 console.log(p3);
