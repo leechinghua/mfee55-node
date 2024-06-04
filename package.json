@@ -5,6 +5,8 @@
   "type": "module",
   "type說明": "使用註解的方式",
   "scripts": {
+    "dev": "nodemon --env-file=dev.env index.js",
+    "start": "node --env-file=dev.env index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
