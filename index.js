@@ -17,12 +17,20 @@ app.get("/", (req, res) => {
 
 app.get("/json-sales", (req, res) => {
   // res.json(salesArray);
-  res.render("json-sales", { sales: salesArray })
+  res.render("json-sales", { sales: salesArray });
 });
 
 // 測試queryString參數
 app.get("/try-qs", (req, res) => {
   res.json(req.query);
+});
+
+app.get("/try-post-form", (req, res) => {
+  res.render("try-post-form");
+});
+
+app.post("/try-post-form", (req, res) => {
+  res.json({ name: "david" });
 });
 
 // app.get("/a.html", (req, res) => {
