@@ -20,6 +20,11 @@ app.get("/json-sales", (req, res) => {
   res.render("json-sales", { sales: salesArray })
 });
 
+// 測試queryString參數
+app.get("/try-qs", (req, res) => {
+  res.json(req.query);
+});
+
 // app.get("/a.html", (req, res) => {
 //   res.send("<h2>假的a.html</h2>");
 // });
