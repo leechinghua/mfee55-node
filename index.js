@@ -11,12 +11,15 @@ const app = express();
 app.get("/", (req, res) => {
   res.send("<h2>Hello World</h2>");
 });
+// ****設定靜態內容資料夾********
+app.use(express.static("public"));
 
+
+// ****放在所有路由後面********
+// 404 頁面
 app.use((req, res) => {
   res.send("<h2>您走錯路了</h2>");
 });
-// ****放在所有路由後面********
-// 404 頁面
 const port = process.env.WEB_PORT || 3002;
 app.listen(port, () => {
   console.log(`伺服器啟動了, port:${port}`);
