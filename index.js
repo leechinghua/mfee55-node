@@ -2,7 +2,7 @@
 // console.log(process.env.DB_PASS);
 
 import express from "express";
-import salesArray from "./data/sales";
+import salesArray from "./data/sales.js";
 
 const app = express();
 // 註冊樣板引擎
@@ -12,7 +12,11 @@ app.set("view engine", "ejs");
 // 2. 只接受 路徑為 / 的 request
 app.get("/", (req, res) => {
   // res.send("<h2>Hello World</h2>");
-  res.render("home", {name: "chinghua"})
+  res.render("home", { name: "chinghua" });
+});
+
+app.get("/json-sales", (req, res) => {
+  res.json(salesArray);
 });
 
 // app.get("/a.html", (req, res) => {
