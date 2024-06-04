@@ -18,6 +18,7 @@ app.get("/", (req, res) => {
 
 // ****設定靜態內容資料夾********
 app.use(express.static("public"));
+app.use("/bootstrap", express.static("node_modules/bootstrap/dist"))
 
 
 // ****放在所有路由後面********
