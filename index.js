@@ -16,7 +16,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/json-sales", (req, res) => {
-  res.json(salesArray);
+  // res.json(salesArray);
+  res.render("json-sales", { sales: salesArray })
 });
 
 // app.get("/a.html", (req, res) => {
