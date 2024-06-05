@@ -7,6 +7,8 @@ import salesArray from "./data/sales.js";
 const app = express();
 // 註冊樣板引擎
 app.set("view engine", "ejs");
+
+app.use(express.urlencoded({ extended: true }));
 // 路由設定, routes
 // 1. get(): 只接受 HTTP GET 方法的拜訪
 // 2. 只接受 路徑為 / 的 request
@@ -30,8 +32,13 @@ app.get("/try-post-form", (req, res) => {
 });
 
 // middleware: 中介軟體,中介處函式
-const urlencodedParser = express.urlencoded({extended: true})
-app.post("/try-post-form", urlencodedParser ,(req, res) => {
+// const urlencodedParser = express.urlencoded({extended: true})
+app.post("/try-post-form", (req, res) => {
+  // 經過parser後，
+  res.json(req.body);
+});
+
+app.post("/try-post", (req, res) => {
   // 經過parser後，
   res.json(req.body);
 });
