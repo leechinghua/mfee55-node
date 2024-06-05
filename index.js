@@ -9,6 +9,7 @@ const app = express();
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 // 路由設定, routes
 // 1. get(): 只接受 HTTP GET 方法的拜訪
 // 2. 只接受 路徑為 / 的 request

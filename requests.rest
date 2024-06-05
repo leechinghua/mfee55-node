@@ -6,8 +6,8 @@ GET http://localhost:3001
 
 
 POST http://localhost:3001/try-post
-Content-Type: application/x-www-form-urlencoded
+Content-Type: application/json
 
-name=小新&address=台南市
+{"name":"小新","address":"台南市"}
 
 ### 分隔線 ----------------
