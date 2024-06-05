@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form onsubmit="return false">
+      <input type="file" name="avatar" />
+    </form>
+    <img src="" alt="" id="preview" />
+    <script>
+      const avatar = document.forms[0].avatar;
+      avatar.addEventListener("change", (e) => {
+        console.log(avatar.files[0]); // 選取的第一個檔案
+
+        // 非同步的方法做取得url
+
+        const reader = new FileReader();
+        reader.addEventListener("load", (event) => {
+          preview.src = reader.result;
+        });
+        // 開始讀取
+        reader.readAsDataURL(avatar.files[0]);
+      });
+    </script>
+  </body>
+</html>
