@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form onsubmit="return false">
+      <input type="file" name="avatar" />
+    </form>
+    <img src="" alt="" id="preview" />
+    <script>
+      const avatar = document.forms[0].avatar;
+      avatar.addEventListener("change", (e) => {
+        console.log(avatar.files[0]); // 選取的第一個檔案
+
+        // 同步的方法做取得url
+        // 資料會暫存在browser中
+        const url = URL.createObjectURL(avatar.files[0]);
+        preview.src = url;
+      });
+    </script>
+  </body>
+</html>
