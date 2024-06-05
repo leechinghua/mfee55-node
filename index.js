@@ -2,8 +2,10 @@
 // console.log(process.env.DB_PASS);
 
 import express from "express";
+import multer from "multer";
 import salesArray from "./data/sales.js";
 
+const upload = multer({ dest: "tmp_uploads/" });
 const app = express();
 // 註冊樣板引擎
 app.set("view engine", "ejs");
@@ -29,6 +31,7 @@ app.get("/try-qs", (req, res) => {
 });
 
 app.get("/try-post-form", (req, res) => {
+  // res.render("try-post-form", { account: "", password: "" });
   res.render("try-post-form");
 });
 
@@ -36,12 +39,26 @@ app.get("/try-post-form", (req, res) => {
 // const urlencodedParser = express.urlencoded({extended: true})
 app.post("/try-post-form", (req, res) => {
   // 經過parser後，
-  res.json(req.body);
+  res.render("/try-post-form", req.body);
 });
 
 app.post("/try-post", (req, res) => {
   // 經過parser後，
   res.json(req.body);
+});
+
+// 測試上傳單一個檔案
+app.post("/try-upload", upload.single("avatar"), (req, res) => {
+  res.json(req.file);
+  res.json({
+    file: req.file,
+    body: req.body,
+  });
+});
+
+
+app.post("/try-uploads", upload.array("photos", 10), (req, res) => {
+  res.json(req.files);
 });
 
 // app.get("/a.html", (req, res) => {
