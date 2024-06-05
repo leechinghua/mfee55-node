@@ -39,7 +39,7 @@ app.get("/try-post-form", (req, res) => {
 // const urlencodedParser = express.urlencoded({extended: true})
 app.post("/try-post-form", (req, res) => {
   // 經過parser後，
-  res.render("/try-post-form", req.body);
+  res.render("try-post-form", req.body);
 });
 
 app.post("/try-post", (req, res) => {
