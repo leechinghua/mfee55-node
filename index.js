@@ -4,8 +4,9 @@
 import express from "express";
 import multer from "multer";
 import salesArray from "./data/sales.js";
+import upload from "./utils/upload-imgs.js";
 
-const upload = multer({ dest: "tmp_uploads/" });
+// const upload = multer({ dest: "tmp_uploads/" });
 const app = express();
 // 註冊樣板引擎
 app.set("view engine", "ejs");
@@ -56,11 +57,21 @@ app.post("/try-upload", upload.single("avatar"), (req, res) => {
   });
 });
 
-
 app.post("/try-uploads", upload.array("photos", 10), (req, res) => {
   res.json(req.files);
 });
+// 特定的路徑放前面
+app.get("/my-params1/abcd", (req, res) => {
+  res.json({path: "/my-params1/abcd"});
+});
 
+
+// 路徑參數
+app.get("/my-params1/:action?/:id?", (req, res) => {
+  res.json(req.params);
+});
+
+// 
 // app.get("/a.html", (req, res) => {
 //   res.send("<h2>假的a.html</h2>");
 // });
