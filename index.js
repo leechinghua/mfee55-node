@@ -5,6 +5,7 @@ import express from "express";
 import multer from "multer";
 import salesArray from "./data/sales.js";
 import upload from "./utils/upload-imgs.js";
+import admin2Router from "./route/admin2.js";
 
 // const upload = multer({ dest: "tmp_uploads/" });
 const app = express();
@@ -77,6 +78,7 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
   res.json({ 手機: u });
 });
 
+app.use(admin2Router);
 //
 // app.get("/a.html", (req, res) => {
 //   res.send("<h2>假的a.html</h2>");
