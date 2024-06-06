@@ -6,6 +6,7 @@ import multer from "multer";
 import salesArray from "./data/sales.js";
 import upload from "./utils/upload-imgs.js";
 import admin2Router from "./route/admin2.js";
+import session from "express-session";
 
 // const upload = multer({ dest: "tmp_uploads/" });
 const app = express();
@@ -14,6 +15,13 @@ app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(
+  session({
+    saveUninitialized: false,
+    resave: false,
+    secret: "sWODJIEjn45652871wjiji",
+  })
+);
 // 路由設定, routes
 // 1. get(): 只接受 HTTP GET 方法的拜訪
 // 2. 只接受 路徑為 / 的 request
@@ -79,7 +87,14 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
 });
 
 app.use("/admins", admin2Router);
-//
+
+app.get("/try-sess", (req, res) => {
+  // req.session.my_num = req.session.my_num || 0;
+  req.session.my_num ||= 0;
+  req.session.my_num++;
+  res.json(req.session);
+});
+
 // app.get("/a.html", (req, res) => {
 //   res.send("<h2>假的a.html</h2>");
 // });
