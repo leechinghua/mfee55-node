@@ -7,7 +7,7 @@ import salesArray from "./data/sales.js";
 import upload from "./utils/upload-imgs.js";
 import admin2Router from "./route/admin2.js";
 import session from "express-session";
-import moment from "moment";
+import moment from "moment-timezone";
 import db from "./utils/connect-mysql.js";
 // const upload = multer({ dest: "tmp_uploads/" });
 const app = express();
