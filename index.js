@@ -78,7 +78,7 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
   res.json({ 手機: u });
 });
 
-app.use(admin2Router);
+app.use("/admins", admin2Router);
 //
 // app.get("/a.html", (req, res) => {
 //   res.send("<h2>假的a.html</h2>");
