@@ -62,16 +62,22 @@ app.post("/try-uploads", upload.array("photos", 10), (req, res) => {
 });
 // 特定的路徑放前面
 app.get("/my-params1/abcd", (req, res) => {
-  res.json({path: "/my-params1/abcd"});
+  res.json({ path: "/my-params1/abcd" });
 });
-
 
 // 路徑參數
 app.get("/my-params1/:action?/:id?", (req, res) => {
   res.json(req.params);
 });
 
-// 
+app.get(/^\/m\/09\d{2}-?\d{3}$/i, (req, res) => {
+  let u = req.url.split("?")[0]; // 只要 ? 前面那段
+  u = u.slice(3); // 前面的三個字元不要
+  u = u.split("-").join("");
+  res.json({ 手機: u });
+});
+
+//
 // app.get("/a.html", (req, res) => {
 //   res.send("<h2>假的a.html</h2>");
 // });
