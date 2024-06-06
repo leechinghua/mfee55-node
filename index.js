@@ -7,6 +7,7 @@ import salesArray from "./data/sales.js";
 import upload from "./utils/upload-imgs.js";
 import admin2Router from "./route/admin2.js";
 import session from "express-session";
+import moment from "moment";
 
 // const upload = multer({ dest: "tmp_uploads/" });
 const app = express();
@@ -97,6 +98,24 @@ app.get("/try-sess", (req, res) => {
   req.session.my_num ||= 0;
   req.session.my_num++;
   res.json(req.session);
+});
+
+app.get("/try-moment", (req, res) => {
+  const fm = "YYYY-MM-DD HH:mm:ss";
+  const m1 = moment();
+  const m2 = moment("2024-2-29");
+  const m3 = moment("2024-5-35");
+
+  res.json({
+    m1: m1.format(fm),
+    m2: m2.format(fm),
+    m3: m3.format(fm),
+    m1v: m1.isValid(), // 是不是有效的日期
+    m2v: m2.isValid(),
+    m3v: m3.isValid(),
+    m1z: m1.tz("Europe/London").format(fm),
+    m2z: m2.tz("Europe/London").format(fm),
+  });
 });
 
 // app.get("/a.html", (req, res) => {
