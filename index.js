@@ -8,7 +8,7 @@ import upload from "./utils/upload-imgs.js";
 import admin2Router from "./route/admin2.js";
 import session from "express-session";
 import moment from "moment";
-
+import db from "./utils/connect-mysql.js";
 // const upload = multer({ dest: "tmp_uploads/" });
 const app = express();
 // 註冊樣板引擎
@@ -116,6 +116,13 @@ app.get("/try-moment", (req, res) => {
     m1z: m1.tz("Europe/London").format(fm),
     m2z: m2.tz("Europe/London").format(fm),
   });
+});
+
+app.get("/try-db", async (req, res) => {
+  const sql = "SELECT * FROM address_book LIMIT 3";
+  // const [rows, fields] = await db.query(sql);
+  const [rows] = await db.query(sql);
+  res.json(rows);
 });
 
 // app.get("/a.html", (req, res) => {
