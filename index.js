@@ -70,7 +70,7 @@ app.get("/my-params1/:action?/:id?", (req, res) => {
   res.json(req.params);
 });
 
-app.get(/^\/m\/09\d{2}-?\d{3}$/i, (req, res) => {
+app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
   let u = req.url.split("?")[0]; // 只要 ? 前面那段
   u = u.slice(3); // 前面的三個字元不要
   u = u.split("-").join("");
