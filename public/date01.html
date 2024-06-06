@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <pre id="info"></pre>
+    <script>
+      const d1 = new Date("2024-06-06"); //
+      const d2 = new Date("2024-06-06 15:17:00");
+
+      const output = {
+        'd1':d1,
+        'd1.toString()':d1.toString(),
+        'd1.toISOString()':d1.toISOString(),
+        'd1.toLocaleString()':d1.toLocaleString(),
+        'd2':d2,
+        'd2.toString()':d2.toString(),
+        'd2.toISOString()':d2.toISOString(),
+        'd2.toLocaleString()':d2.toLocaleString(),
+
+      }
+      info.innerHTML = JSON.stringify(output, null, 4)
+    </script>
+  </body>
+</html>
