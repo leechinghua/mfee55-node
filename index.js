@@ -19,7 +19,11 @@ app.use(
   session({
     saveUninitialized: false,
     resave: false,
+    // name:'super.mario', // cookie (session id) 的名稱
     secret: "sWODJIEjn45652871wjiji",
+    // cookie: {
+    //   maxAge: 1200_000
+    // }
   })
 );
 // 路由設定, routes
