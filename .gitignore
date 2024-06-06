@@ -5,4 +5,4 @@ node_modules
 package-lock.json
 headers.txt
 tmp_uploads
-public\img
+public/img
