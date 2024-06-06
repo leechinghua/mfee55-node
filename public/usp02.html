@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form name="form1" onsubmit="return false">
+      <input type="text" name="account" value="peter" /><br />
+      <input type="text" name="password" value="my-password" /><br />
+      <input type="checkbox" name="options" value="香蕉" checked />
+      <label for="">香蕉</label>
+      <br />
+      <input type="checkbox" name="options" value="蘋果" checked />
+      <label for="">蘋果</label>
+      <br />
+    </form>
+    <button onclick="showInfo()">show form info</button>
+
+    <script>
+      let fd;
+      const showInfo = () => {
+        fd = new FormData(document.form1);
+
+        fd.append("option", "芭樂");
+
+        for (let [k, v] of fd.entries()) {
+          console.log({ k, v });
+        }
+        const usp = new URLSearchParams(fd);
+        console.log(usp.toString());
+      };
+    </script>
+  </body>
+</html>
