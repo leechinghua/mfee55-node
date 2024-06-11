@@ -3,15 +3,19 @@
 
 import express from "express";
 import multer from "multer";
-import salesArray from "./data/sales.js";
+import sales from "./data/sales.js";
 import upload from "./utils/upload-imgs.js";
 import admin2Router from "./route/admin2.js";
+import abRouter from "./route/address-book.js";
 import session from "express-session";
+import mysql_session from "express-mysql-session";
 import moment from "moment-timezone";
 import db from "./utils/connect-mysql.js";
 // const upload = multer({ dest: "tmp_uploads/" });
 const app = express();
 // 註冊樣板引擎
+const MysqlStore = mysql_session(session);
+const sessionStore = new MysqlStore({}, db);
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: true }));
@@ -25,8 +29,17 @@ app.use(
     // cookie: {
     //   maxAge: 1200_000
     // }
+    store: sessionStore,
   })
 );
+
+app.use((req, res, next) => {
+  // res.send("<p>直接被中斷</p>"); // 不應該回應
+  res.locals.title = '小新的網站'; // 預設的頁面 title
+  res.locals.pageName = '';
+  next();
+});
+app.use("/address-book", abRouter);
 // 路由設定, routes
 // 1. get(): 只接受 HTTP GET 方法的拜訪
 // 2. 只接受 路徑為 / 的 request
@@ -36,8 +49,10 @@ app.get("/", (req, res) => {
 });
 
 app.get("/json-sales", (req, res) => {
+  res.locals.title = 'JSON-SALES | ' + res.locals.title;
+  res.locals.pageName = 'json-sales';
   // res.json(salesArray);
-  res.render("json-sales", { sales: salesArray });
+  res.render("json-sales", { sales });
 });
 
 // 測試queryString參數
@@ -46,6 +61,8 @@ app.get("/try-qs", (req, res) => {
 });
 
 app.get("/try-post-form", (req, res) => {
+  res.locals.title = '測試表單 | ' + res.locals.title;
+  res.locals.pageName = 'tpf';
   // res.render("try-post-form", { account: "", password: "" });
   res.render("try-post-form");
 });
