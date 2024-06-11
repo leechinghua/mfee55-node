@@ -21,8 +21,9 @@
     <script>
       let fd;
       const showInfo = () => {
+        // 從有外觀的表取得資料
         fd = new FormData(document.form1);
-
+        // 加入一組資料(欄位名稱, 值)
         fd.append("option", "芭樂");
 
         for (let [k, v] of fd.entries()) {
@@ -31,6 +32,7 @@
         const usp = new URLSearchParams(fd);
         console.log(usp.toString());
       };
+      showInfo()
     </script>
   </body>
 </html>
