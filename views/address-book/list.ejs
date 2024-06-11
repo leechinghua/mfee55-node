@@ -1,6 +1,32 @@
 <%-include("parts/html-head") %> <%-include("parts/navbar") %>
 <div class="container">
-  <h1>list</h1>
+  <div class="row">
+    <div class="col">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>姓名</th>
+            <th>電郵</th>
+            <th>手機</th>
+            <th>生日</th>
+            <th>地址</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(let r of rows) %>
+          <tr>
+            <td><% r.sid %></td>
+            <td><% r.name %></td>
+            <td><% r.email %></td>
+            <td><% r.mobile %></td>
+            <td><% r.birthday %></td>
+            <td><% r.address %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <%-include("parts/scripts") %> <%-include("parts/html-foot") %>
