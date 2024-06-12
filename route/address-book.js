@@ -16,10 +16,10 @@ router.get("/", async (req, res) => {
 
   let where = ` WHERE 1 `;
   if (keyword) {
-    where += ` AND \`name\` LIKE '%${keyword}%' `;
+    where += ` AND \`name\` LIKE ${db.escape("%" + keyword + "%")} `;
   }
 
-  const sql = "SELECT COUNT(*) totalRows FROM address_book";
+  const sql = `SELECT COUNT(*) totalRows FROM address_book ${where}`;
   const [[{ totalRows }]] = await db.query(sql); // 取得總筆數
   let totalPages = 0;
   let rows = [];
@@ -44,6 +44,7 @@ router.get("/", async (req, res) => {
     page,
     perPage,
     rows,
+    qs: req.query, // query string 參數
   });
 });
 
