@@ -99,7 +99,7 @@ router.post("/add", upload.none(), async (req, res) => {
     success: false,
     bodyData: req.body,
     result: {},
-  }
+  };
   // const sql = `INSERT INTO address_book(name, email, mobile, birthday, address, created_at) VALUES (?,?,?,?,?,Now())`;
 
   // const [result] = await db.query(sql, [
@@ -111,12 +111,19 @@ router.post("/add", upload.none(), async (req, res) => {
   // ]);
   const sql2 = `INSERT INTO address_book set ?`;
   const data = { ...req.body, created_at: new Date() };
+
+  data.birthday = moment(data.birthday);
+  if (data.birthday.isValid()) {
+    data.birthday = data.birthday.format(dateFormat);
+  } else {
+    data.birthday = null;
+  }
   try {
     const [result] = await db.query(sql2, [data]);
     output.result = result;
-    output.success = !! result.affectedRows;
+    output.success = !!result.affectedRows;
   } catch (ex) {
-    output.error=ex;
+    output.error = ex;
   }
 
   res.json(output);
