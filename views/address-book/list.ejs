@@ -71,23 +71,36 @@
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
+            <th><i class="fa-solid fa-trash"></i></th>
             <th>#</th>
             <th>姓名</th>
             <th>電郵</th>
             <th>手機</th>
             <th>生日</th>
             <th>地址</th>
+            <th><i class="fa-solid fa-pen-to-square"></i></th>
           </tr>
         </thead>
         <tbody>
           <% for(let r of rows){ %>
           <tr>
+            <td>
+              <a href="javascript: deleteOne(<%= r.sid %>)"
+                ><i class="fa-solid fa-trash"></i>
+              </a>
+            </td>
+            <td><%= r.sid %></td>
             <td><%= r.sid %></td>
             <td><%= r.name %></td>
             <td><%= r.email %></td>
             <td><%= r.mobile %></td>
             <td><%= r.birthday %></td>
             <td><%= r.address %></td>
+            <td>
+              <a href="/address-book/edit/<%= r.sid %>">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </a>
+            </td>
           </tr>
           <% } %>
         </tbody>
@@ -95,4 +108,17 @@
     </div>
   </div>
 </div>
-<%- include("../parts/scripts") %> <%- include("../parts/html-foot") %>
+<%- include("../parts/scripts") %>
+<script>
+  const deleteOne = async (sid) => {
+    if (confirm(`是否要刪除編號為${sid}的資料?`)) {
+      const r = await fetch(`/address-book/${sid}`, {
+        method: "DELETE",
+      });
+      const result = await r.json();
+      console.log(result);
+      location.reload();
+    }
+  };
+</script>
+<%- include("../parts/html-foot") %>

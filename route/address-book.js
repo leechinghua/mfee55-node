@@ -1,4 +1,4 @@
-import express from "express";
+import express, { query } from "express";
 import moment from "moment-timezone";
 import db from "./../utils/connect-mysql.js";
 import upload from "./../utils/upload-imgs.js";
@@ -127,6 +127,39 @@ router.post("/add", upload.none(), async (req, res) => {
   }
 
   res.json(output);
+});
+
+router.delete("/:sid", async (req, res) => {
+  const output = {
+    success: false,
+    result: {},
+  };
+  let sid = +req.params.sid || 0;
+  if (sid) {
+    const sql = `DELETE FROM address_book WHERE sid=${sid}`;
+    const [result] = await db.query(sql);
+    output.result = result;
+    output.success = !!result.affectedRows;
+  }
+  res.json(output);
+});
+
+router.get("/edit/:sid", async (req, res) => {
+  let sid = +req.params.sid || 0;
+  if (!sid) {
+    return res.redirect("/address-book");
+  }
+  const sql = `SELECT * FROM address_book WHERE sid=${sid}`;
+  const [rows] = await db.query(sql);
+  if (rows.length === 0) {
+    return res.redirect("/address-book");
+  }
+  // res.json(rows[0]);
+  res.render("address-book/edit", rows[0]);
+});
+
+router.put("/edit/:sid", async (req, res) => {
+  res.json(req.body);
 });
 
 export default router;
