@@ -60,7 +60,9 @@ const getListData = async (req) => {
     [rows] = await db.query(sql2);
     rows.forEach((r) => {
       // JS 的 Date 類型轉換為日期格式的字串
-      r.birthday = moment(r.birthday).format(dateFormat);
+      if (r.birthday) {
+        r.birthday = moment(r.birthday).format(dateFormat);
+      }
     });
   }
   // res.json({ totalRows, totalPages, page, perPage, rows });
@@ -155,11 +157,22 @@ router.get("/edit/:sid", async (req, res) => {
     return res.redirect("/address-book");
   }
   // res.json(rows[0]);
-  res.render("address-book/edit", rows[0]);
+  const row = rows[0];
+  if (row.birthday) {
+    row.birthday = moment(row.birthday).format(dateFormat);
+  }
+
+  res.render("address-book/edit", row);
 });
 
-router.put("/edit/:sid", async (req, res) => {
-  res.json(req.body);
+router.put("/edit/:sid", upload.none(), async (req, res) => {
+  let sid = +req.params.sid || 0;
+  if (!sid) {
+    return res.json({ success: false, info: "不正確的主鍵" });
+  }
+  const sql = "UPDATE address_book SET ? WHERE sid=?";
+  const [result] = await db.query(sql, [req.body, sid]);
+  res.json(result);
 });
 
 export default router;
