@@ -65,6 +65,7 @@ const getListData = async (req) => {
   }
   // res.json({ totalRows, totalPages, page, perPage, rows });
   return {
+    success: true,
     totalRows,
     totalPages,
     page,
@@ -94,7 +95,31 @@ router.get("/add", async (req, res) => {
 });
 
 router.post("/add", upload.none(), async (req, res) => {
-  res.json(req.body);
+  const output = {
+    success: false,
+    bodyData: req.body,
+    result: {},
+  }
+  // const sql = `INSERT INTO address_book(name, email, mobile, birthday, address, created_at) VALUES (?,?,?,?,?,Now())`;
+
+  // const [result] = await db.query(sql, [
+  //   req.body.name,
+  //   req.body.email,
+  //   req.body.mobile,
+  //   req.body.birthday,
+  //   req.body.address,
+  // ]);
+  const sql2 = `INSERT INTO address_book set ?`;
+  const data = { ...req.body, created_at: new Date() };
+  try {
+    const [result] = await db.query(sql2, [data]);
+    output.result = result;
+    output.success = !! result.affectedRows;
+  } catch (ex) {
+    output.error=ex;
+  }
+
+  res.json(output);
 });
 
 export default router;
