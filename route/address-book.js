@@ -1,6 +1,7 @@
 import express from "express";
 import moment from "moment-timezone";
 import db from "./../utils/connect-mysql.js";
+import { PrepareStatementInfo } from "mysql2";
 
 const dateFormat = "YYYY-MM-DD";
 const router = express.Router();
@@ -8,6 +9,10 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   res.locals.pageName = "ab-list";
   let keyword = req.query.keyword || ""; // 預設值為空字串
+
+  let birthBegin = req.query.birthBegin || "";
+  let birthEnd = req,query.birthEnd || "";
+
   const perPage = 20; // 每頁最多有幾筆
   let page = +req.query.page || 1;
   if (page < 1) {
@@ -16,7 +21,18 @@ router.get("/", async (req, res) => {
 
   let where = ` WHERE 1 `;
   if (keyword) {
-    where += ` AND \`name\` LIKE ${db.escape("%" + keyword + "%")} `;
+    where += ` AND 
+    \`name\` LIKE ${db.escape(`%${keyword}%`)}  
+    OR
+    \`mobile\` LIKE ${db.escape(`%${keyword}%`)} `;
+  }
+  birthBegin = moment(birthBegin);
+  if(birthBegin.isValid()){
+    where += ` AND birthday >= '${birthBegin.format(dateFormat)}`
+  }
+  birthEnd= moment(birthEnd);
+  if(birthEnd.isValid()){
+    where += ` AND birthday >= '${birthEnd.format(dateFormat)}`
   }
 
   const sql = `SELECT COUNT(*) totalRows FROM address_book ${where}`;
