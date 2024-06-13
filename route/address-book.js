@@ -9,21 +9,22 @@ const router = express.Router();
 const getListData = async (req) => {
   let keyword = req.query.keyword || ""; // 預設值為空字串
 
-  let birthBegin = req.query.birthBegin || "";
-  let birthEnd = req.query.birthEnd || "";
+  let birthBegin = req.query.birthBegin || "";// 這個日期之後出生的
+  let birthEnd = req.query.birthEnd || "";// 這個日期之前出生的
 
   const perPage = 20; // 每頁最多有幾筆
   let page = +req.query.page || 1;
   if (page < 1) {
     return {
       success: false,
-      redirect: `?page=1`,
+      redirect: `?page=1`,// 需要轉向
       info: "page 值太小",
     };
   } // 轉向
 
   let where = ` WHERE 1 `;
-  if (keyword) {
+  if (keyword) { 
+    // where += ` AND \`name\` LIKE ${db.escape("%" + keyword + "%")} `;
     where += ` AND 
     ( \`name\` LIKE ${db.escape(`%${keyword}%`)}  
     OR
@@ -42,14 +43,15 @@ const getListData = async (req) => {
 
   const sql = `SELECT COUNT(*) totalRows FROM address_book ${where}`;
   const [[{ totalRows }]] = await db.query(sql); // 取得總筆數
-  let totalPages = 0;
-  let rows = [];
+
+  let totalPages = 0; // 總頁數, 預設值設定 0
+  let rows = []; // 分頁資料
   if (totalRows > 0) {
     totalPages = Math.ceil(totalRows / perPage);
     if (page > totalPages) {
       return {
         success: false,
-        redirect: `?page=${totalPages}`,
+        redirect: `?page=${totalPages}`,// 需要轉向
         info: "page 值太大",
       };
     }
@@ -93,6 +95,8 @@ router.get("/api", async (req, res) => {
 });
 
 router.get("/add", async (req, res) => {
+  res.locals.pageName = "ab-add";
+  // 呈現新增資料的表單
   res.render("address-book/add");
 });
 
@@ -102,6 +106,11 @@ router.post("/add", upload.none(), async (req, res) => {
     bodyData: req.body,
     result: {},
   };
+  // 處理表單資料
+
+  // TODO: 欄位資料檢查
+  // 可用ZOD套件
+
   // const sql = `INSERT INTO address_book(name, email, mobile, birthday, address, created_at) VALUES (?,?,?,?,?,Now())`;
 
   // const [result] = await db.query(sql, [
@@ -112,12 +121,15 @@ router.post("/add", upload.none(), async (req, res) => {
   //   req.body.address,
   // ]);
   const sql2 = `INSERT INTO address_book set ?`;
+  // data 物件的屬性, 對應到資料表的欄位
   const data = { ...req.body, created_at: new Date() };
 
   data.birthday = moment(data.birthday);
   if (data.birthday.isValid()) {
+    // 如果是正確的格式
     data.birthday = data.birthday.format(dateFormat);
   } else {
+    // 不是正確的日期格式, 就使用空值
     data.birthday = null;
   }
   try {
@@ -125,12 +137,14 @@ router.post("/add", upload.none(), async (req, res) => {
     output.result = result;
     output.success = !!result.affectedRows;
   } catch (ex) {
-    output.error = ex;
+    // sql 發生錯誤
+    output.error = ex;// 開發時期除錯
   }
 
   res.json(output);
 });
 
+// 比較符合 RESTful API 的寫法
 router.delete("/:sid", async (req, res) => {
   const output = {
     success: false,
@@ -146,6 +160,7 @@ router.delete("/:sid", async (req, res) => {
   res.json(output);
 });
 
+// 呈現修改資料的表單
 router.get("/edit/:sid", async (req, res) => {
   let sid = +req.params.sid || 0;
   if (!sid) {
@@ -154,11 +169,13 @@ router.get("/edit/:sid", async (req, res) => {
   const sql = `SELECT * FROM address_book WHERE sid=${sid}`;
   const [rows] = await db.query(sql);
   if (rows.length === 0) {
+    // 沒有該筆資料時, 跳回列表頁
     return res.redirect("/address-book");
   }
   // res.json(rows[0]);
   const row = rows[0];
   if (row.birthday) {
+    // 日期格式轉換
     row.birthday = moment(row.birthday).format(dateFormat);
   }
 
