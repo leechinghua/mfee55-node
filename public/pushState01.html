@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="aTags">
+      <div><a href="?a=1">?a=1</a></div>
+      <div><a href="/abc/def">/abc/def</a></div>
+      <!-- 下面對 pushState() 是無效的-->
+      <div><a href="https://tw.yahoo.com/">https://tw.yahoo.com/</a></div>
+    </div>
+    <div id="info"></div>
+    <script>
+      const aTags = document.querySelector("#aTags");
+
+      aTags.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (e.target.tagName === "A") {
+          const href = e.target.getAttribute("href");
+          history.pushState({ href }, "", href);// 變換網址, 但不刷新頁面
+        }
+      });
+      window.addEventListener('popstate', e => {
+      console.log(e.state);
+      console.log(location.href);
+    })
+    </script>
+  </body>
+</html>
