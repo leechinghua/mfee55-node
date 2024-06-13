@@ -86,7 +86,11 @@ router.get("/", async (req, res) => {
   if (result.redirect) {
     return res.redirect(result, redirect);
   }
-  res.render("address-book/list", result);
+  if (req.session.admin) {
+    res.render("address-book/list", result);
+  } else {
+    res.render("address-book/list-no-admin", result);
+  }
 });
 
 router.get("/api", async (req, res) => {

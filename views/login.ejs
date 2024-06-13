@@ -75,9 +75,10 @@
 <script>
   const sendData = (e) => {
     e.preventDefault();
+
     const obj = {
       email: document.form1.email.value,
-      password: document.form1.email.value,
+      password: document.form1.password.value,
     };
 
     fetch("", {
