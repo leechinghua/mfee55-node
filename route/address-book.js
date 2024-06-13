@@ -9,21 +9,21 @@ const router = express.Router();
 const getListData = async (req) => {
   let keyword = req.query.keyword || ""; // 預設值為空字串
 
-  let birthBegin = req.query.birthBegin || "";// 這個日期之後出生的
-  let birthEnd = req.query.birthEnd || "";// 這個日期之前出生的
+  let birthBegin = req.query.birthBegin || ""; // 這個日期之後出生的
+  let birthEnd = req.query.birthEnd || ""; // 這個日期之前出生的
 
   const perPage = 20; // 每頁最多有幾筆
   let page = +req.query.page || 1;
   if (page < 1) {
     return {
       success: false,
-      redirect: `?page=1`,// 需要轉向
+      redirect: `?page=1`, // 需要轉向
       info: "page 值太小",
     };
   } // 轉向
 
   let where = ` WHERE 1 `;
-  if (keyword) { 
+  if (keyword) {
     // where += ` AND \`name\` LIKE ${db.escape("%" + keyword + "%")} `;
     where += ` AND 
     ( \`name\` LIKE ${db.escape(`%${keyword}%`)}  
@@ -51,7 +51,7 @@ const getListData = async (req) => {
     if (page > totalPages) {
       return {
         success: false,
-        redirect: `?page=${totalPages}`,// 需要轉向
+        redirect: `?page=${totalPages}`, // 需要轉向
         info: "page 值太大",
       };
     }
@@ -138,7 +138,7 @@ router.post("/add", upload.none(), async (req, res) => {
     output.success = !!result.affectedRows;
   } catch (ex) {
     // sql 發生錯誤
-    output.error = ex;// 開發時期除錯
+    output.error = ex; // 開發時期除錯
   }
 
   res.json(output);
@@ -183,13 +183,22 @@ router.get("/edit/:sid", async (req, res) => {
 });
 
 router.put("/edit/:sid", upload.none(), async (req, res) => {
+  const output = {
+    success: false,
+    bodyData: req.body,
+    result: null,
+  };
   let sid = +req.params.sid || 0;
   if (!sid) {
     return res.json({ success: false, info: "不正確的主鍵" });
   }
   const sql = "UPDATE address_book SET ? WHERE sid=?";
   const [result] = await db.query(sql, [req.body, sid]);
-  res.json(result);
+
+  output.result = result;
+  output.success = !!(result.affectedRows && result.changedRows);
+
+  res.json(output);
 });
 
 export default router;
