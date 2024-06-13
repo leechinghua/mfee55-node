@@ -188,6 +188,14 @@ app.get("/zod2/:index?", async (req, res) => {
   res.json(result);
 });
 
+app.get("/login", async (req, res) => {
+  res.render("login");
+});
+app.post("/login", async (req, res) => {
+  res.json(req.body);
+});
+app.get("/logout", async (req, res) => {});
+
 app.get("/yahoo", async (req, res) => {
   const r = await fetch("https://tw.yahoo.com");
   const txt = await r.text();
