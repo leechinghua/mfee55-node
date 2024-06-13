@@ -12,6 +12,7 @@ import mysql_session from "express-mysql-session";
 import moment from "moment-timezone";
 import db from "./utils/connect-mysql.js";
 import { z } from "zod";
+import cors from "cors";
 // const upload = multer({ dest: "tmp_uploads/" });
 const app = express();
 // 註冊樣板引擎
@@ -19,6 +20,7 @@ const MysqlStore = mysql_session(session);
 const sessionStore = new MysqlStore({}, db);
 app.set("view engine", "ejs");
 
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(
@@ -174,6 +176,12 @@ app.get("/zod2/:index?", async (req, res) => {
   const result = schema.safeParse(ar[index]);
 
   res.json(result);
+});
+
+app.get("/yahoo", async (req, res) => {
+  const r = await fetch("https://tw.yahoo.com");
+  const txt = await r.text();
+  res.send(txt);
 });
 
 // app.get("/a.html", (req, res) => {
