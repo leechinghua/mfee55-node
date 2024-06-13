@@ -20,6 +20,16 @@ const MysqlStore = mysql_session(session);
 const sessionStore = new MysqlStore({}, db);
 app.set("view engine", "ejs");
 
+const corsOption = {
+  credential: true,
+  origin: (origin, callback) => {
+    console.log({ origin });
+    callback(null, true);
+    // 允許所有網站取得資源
+  },
+};
+// app.use(cors(corsOptions));
+
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
