@@ -7,6 +7,7 @@ import sales from "./data/sales.js";
 import upload from "./utils/upload-imgs.js";
 import admin2Router from "./route/admin2.js";
 import abRouter from "./route/address-book.js";
+import cart2Router from "./route/cart2.js";
 import session from "express-session";
 import mysql_session from "express-mysql-session";
 import moment from "moment-timezone";
@@ -128,6 +129,7 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
 });
 
 app.use("/admins", admin2Router);
+app.use("/cart2", cart2Router);
 
 app.get("/try-sess", (req, res) => {
   // req.session.my_num = req.session.my_num || 0;
@@ -230,6 +232,18 @@ app.post("/login", async (req, res) => {
 app.get("/logout", async (req, res) => {
   delete req.session.admin;
   res.redirect("/");
+});
+// ***
+app.get("/q/:mid", async (req, res) => {
+  const mid = +req.params.mid || 0;
+
+  const sql = `SELECT id, email, nickname FROM memebers WHERE id=${mid}`;
+  const [rows] = await db.query(sql);
+  if (rows.length) {
+    req.session.admin = row[0];
+    return res.json({ success: true, ...rows[0] });
+  }
+  res.json({ success: false });
 });
 
 app.get("/yahoo", async (req, res) => {
