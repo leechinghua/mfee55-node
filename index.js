@@ -33,6 +33,10 @@ const corsOption = {
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+// extended 選項決定了解析查詢字符串時使用的庫：
+// true：使用 qs 庫，支持深層嵌套的對象。
+// false：使用內置的 querystring 庫，不支持深層嵌套的對象。
+
 app.use(express.json());
 app.use(
   session({
