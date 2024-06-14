@@ -84,11 +84,16 @@ const getListData = async (req) => {
 router.use((req, res, next) => {
   if (req.session.admin) {
     // 如果有登入就讓他通過
-    next();
-  } else {
-    // res.status(403).send("<h1>無權訪問此頁面</h1>");
-    res.redirect(`/login?u=${req.originalUrl}`); // 導到登入頁
+    return next();
   }
+  let path = req.url.split("?")[0];// 只要路徑 (去掉 query string)
+  // 可通過的白名單
+
+  if (["/", "/api"].includes(path)) {
+    return next();
+  }
+  // res.status(403).send("<h1>無權訪問此頁面</h1>");
+  res.redirect(`/login?u=${req.originalUrl}`); // 導到登入頁
 });
 
 router.get("/", async (req, res) => {
