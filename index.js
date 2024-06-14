@@ -233,14 +233,14 @@ app.get("/logout", async (req, res) => {
   delete req.session.admin;
   res.redirect("/");
 });
-// ***
+// *** 測試用: 快速登入
 app.get("/q/:mid", async (req, res) => {
   const mid = +req.params.mid || 0;
 
-  const sql = `SELECT id, email, nickname FROM memebers WHERE id=${mid}`;
+  const sql = `SELECT id, email, nickname FROM members WHERE id=${mid}`;
   const [rows] = await db.query(sql);
   if (rows.length) {
-    req.session.admin = row[0];
+    req.session.admin = rows[0];
     return res.json({ success: true, ...rows[0] });
   }
   res.json({ success: false });
