@@ -79,6 +79,18 @@ const getListData = async (req) => {
   };
 };
 
+// router top-level middleware
+
+router.use((req, res, next) => {
+  if (req.session.admin) {
+    // 如果有登入就讓他通過
+    next();
+  } else {
+    // res.status(403).send("<h1>無權訪問此頁面</h1>");
+    res.redirect(`/login?u=${req.originalUrl}`); // 導到登入頁
+  }
+});
+
 router.get("/", async (req, res) => {
   res.locals.pageName = "ab-list";
   const result = await getListData(req);
