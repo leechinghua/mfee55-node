@@ -15,6 +15,7 @@ import db from "./utils/connect-mysql.js";
 import { z } from "zod";
 import cors from "cors";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 // const upload = multer({ dest: "tmp_uploads/" });
 const app = express();
 // 註冊樣板引擎
@@ -250,6 +251,24 @@ app.get("/yahoo", async (req, res) => {
   const r = await fetch("https://tw.yahoo.com");
   const txt = await r.text();
   res.send(txt);
+});
+
+app.get("/jwt1", async (req, res) => {
+  console.log(process.env.JWT_KEY);
+  const data = {
+    id: 26,
+    email: "aaa@test.com",
+  };
+  const token = jwt.sign(data, process.env.JWT_KEY);
+  res.send(token);
+  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYsImVtYWlsIjoiYWFhQHRlc3QuY29tIiwiaWF0IjoxNzE5OTcwMzEyfQ.jic7qUIZpwIrsw6R77v0nvJ8d_sYQoHI5XeLxeNR-sc
+});
+
+app.get("/jwt2", async (req, res) => {
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjYsImVtYWlsIjoiYWFhQHRlc3QuY29tIiwiaWF0IjoxNzE5OTcwMzEyfQ.jic7qUIZpwIrsw6R77v0nvJ8d_sYQoHI5XeLxeNR-sc";
+  const payload = jwt.verify(token, process.env.JWT_KEY);
+
+  res.json(payload);
 });
 
 // app.get("/a.html", (req, res) => {
