@@ -80,6 +80,14 @@ const getListData = async (req) => {
 };
 
 // router top-level middleware
+// // 模擬網速不穩定狀況
+// router.use((req, res, next) => {
+//   const ms = 200 + Math.floor(Math.random() * 2000);
+//   setTimeout(() => {
+//     next();
+//   }, ms);
+// });
+
 
 router.use((req, res, next) => {
   if (req.session.admin) {
