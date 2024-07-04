@@ -255,7 +255,7 @@ app.post("/login-jwt", async (req, res) => {
     output.code = 410;// 帳號是錯的
     return res.json(output);
   }
-  const row = row[0];
+  const row = rows[0];
   const result = await bcrypt.compare(password, row.password);
   if(result){
     output.success = true;
